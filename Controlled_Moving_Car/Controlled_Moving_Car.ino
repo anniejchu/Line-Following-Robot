@@ -8,64 +8,51 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);
 Adafruit_DCMotor *rightMotor = AFMS.getMotor(2);
 
-
 int leftSensorPin = A0; //left IR sensor
 int rightSensorPin = A1; //right IR sensor
-int receivedChar;
-boolean isRunning = false;
+int receivedChar; //initiating variable to hold character input
+boolean isRunning = false; //boolean for continuous driving
 
 void setup() {
   long baudRate = 9600;
   Serial.begin(baudRate); //setting up serial communication
-
   AFMS.begin();  // create with the default frequency 1.6KHz
-
 
   leftMotor->run(FORWARD);
   rightMotor->run(FORWARD);
 
   rightMotor->run(RELEASE);
   leftMotor->run(RELEASE);
-
 }
 
 void loop() {
-
   recvOneChar();  
-
-  if (isRunning)
-  {
-    runCar();
+  if (isRunning){
+    runCar(); //will run car if isRunning boolean is true
   }
-  
+  elif (isRunning == false){
+    stopCar(); //will stop car if isRunning boolean is false
+  }
 }
 
 void recvOneChar() {
-
-  if (Serial.available() > 0)
+  if (Serial.available() > 0) //detecting for serial input
   {
-
     receivedChar = Serial.read();
-
-    if (receivedChar == 'g') {
-      //runCar();
+    if (receivedChar == 'g') { //will set isRunning true if g key is entered in serial monitor
       isRunning = true;
     }
-
-    else if (receivedChar == 's') {
-      stopCar();
+    else if (receivedChar == 's') { //will set isRunning false if s key is entered in serial monitor
       isRunning = false;
     }
   }
 }
 
 
-void runCar()
-{
+void runCar() {
   int rightSensor = analogRead(rightSensorPin);
   int leftSensor = analogRead(leftSensorPin);
 
-//  
 //  Serial.print("Right: "); Serial.print(rightSensor); //normal at ground should be around 300
 //  Serial.println();
 //  Serial.print("Left: "); Serial.print(leftSensor); //normal at ground should be around 300
