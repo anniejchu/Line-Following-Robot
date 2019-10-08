@@ -52,14 +52,14 @@ void loop() {
 
 
   if (leftSensor > 850) { //Forward for left motor = backwards in real life
-    leftMotor->setSpeed(55);
+    leftMotor->setSpeed(25);
     rightMotor -> setSpeed(0);
     leftMotor->run(BACKWARD);
     rightMotor ->run(BACKWARD);
   }
 
   else if (rightSensor > 850) {
-    rightMotor->setSpeed(55);
+    rightMotor->setSpeed(25);
     leftMotor -> setSpeed(0);
     rightMotor->run(FORWARD);
     leftMotor->run(FORWARD);
