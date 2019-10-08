@@ -16,12 +16,12 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 // Adafruit_MotorShield AFMS = Adafruit_MotorShield(0x61);
 
 // Select which 'port' M1, M2, M3 or M4. In this case, M1
-Adafruit_DCMotor *rightMotor = AFMS.getMotor(1);
-Adafruit_DCMotor *leftMotor = AFMS.getMotor(2);
+Adafruit_DCMotor *leftMotor = AFMS.getMotor(1);
+Adafruit_DCMotor *rightMotor = AFMS.getMotor(2);
 
 
-int rightSensorPin = A0; //Sensor pin
-int leftSensorPin = A1;
+int leftSensorPin = A0; //Sensor pin
+int rightSensorPin = A1;
 
 void setup() {
   long baudRate = 9600;
@@ -31,85 +31,44 @@ void setup() {
   //AFMS.begin(1000);  // OR with a different frequency, say 1KHz
 
   //   Set the speed to start, from 0 (off) to 255 (max speed)
-  rightMotor->setSpeed(150);
-  leftMotor->setSpeed(150);
-  leftMotor->run(FORWARD);
-  rightMotor->run(FORWARD);
-  // turn on motor
+//
+//  leftMotor->run(FORWARD);
+//  rightMotor->run(FORWARD);
+//  // turn on motor
   rightMotor->run(RELEASE);
   leftMotor->run(RELEASE);
 
 }
 
 void loop() {
-  uint8_t i;
-
 
   int rightSensor = analogRead(rightSensorPin);
   int leftSensor = analogRead(leftSensorPin);
-  //  Serial.print("Right: ");Serial.print(rightSensor);
-  //  Serial.println();
-  //  Serial.print("Left: ");Serial.print(leftSensor);
-  //  Serial.println();
+
+//    Serial.print("Right: ");Serial.print(rightSensor); //normal at ground should be around 300
+//    Serial.println();
+//    Serial.print("Left: ");Serial.print(leftSensor); //normal at ground should be around 300
+//    Serial.println();
 
 
-  if (rightSensor < 1000) {
-    rightMotor->setSpeed(100);
-    rightMotor->run(FORWARD);}
-    else {
-      rightMotor -> setSpeed(0);
-    }
+  if (leftSensor > 850) { //Forward for left motor = backwards in real life
+    leftMotor->setSpeed(55);
+    rightMotor -> setSpeed(0);
+    leftMotor->run(BACKWARD);
+    rightMotor ->run(BACKWARD);
+  }
 
-  else if (leftSensor < 1000) {
-  leftMotor->setSpeed(100);
-  leftMotor->run(FORWARD);}
-  else {
+  else if (rightSensor > 850) {
+    rightMotor->setSpeed(55);
     leftMotor -> setSpeed(0);
+    rightMotor->run(FORWARD);
+    leftMotor->run(FORWARD);
+  }
+
+  else {
+    leftMotor -> setSpeed(15);
+    rightMotor -> setSpeed(15);
+    rightMotor->run(FORWARD);
+    leftMotor->run(BACKWARD); //forward for this motor (mounted backwards)
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//  my2Motor->run(FORWARD);
-//  for (i=0; i<255; i++) {
-//    myMotor->setSpeed(i);
-//    my2Motor->setSpeed(i);
-//    delay(10);
-//  }
-//  for (i=255; i!=0; i--) {
-//    myMotor->setSpeed(i);
-//    my2Motor->setSpeed(i);
-//    delay(10);
-//  }
-//
-//  Serial.print("tock");
-//
-//  myMotor->run(BACKWARD);
-//  my2Motor->run(BACKWARD);
-//  for (i=0; i<255; i++) {
-//    myMotor->setSpeed(i);
-//    my2Motor->setSpeed(i);
-//    delay(10);
-//  }
-//  for (i=255; i!=0; i--) {
-//    myMotor->setSpeed(i);
-//    my2Motor->setSpeed(i);
-//    delay(10);
-//  }
-//
-//  Serial.print("tech");
-//  myMotor->run(RELEASE);
-//  my2Motor->run(RELEASE);
-//  delay(1000);
-//}
