@@ -30,7 +30,7 @@ void loop() {
   if (isRunning){
     runCar(); //will run car if isRunning boolean is true
   }
-  elif (isRunning == false){
+  else if (isRunning == false){
     stopCar(); //will stop car if isRunning boolean is false
   }
 }
@@ -53,13 +53,18 @@ void runCar() {
   int rightSensor = analogRead(rightSensorPin);
   int leftSensor = analogRead(leftSensorPin);
 
-//  Serial.print("Right: "); Serial.print(rightSensor); //normal at ground should be around 300
+Serial.print("Right: "); 
+Serial.print(rightSensor); //normal at ground should be around 300
 //  Serial.println();
-//  Serial.print("Left: "); Serial.print(leftSensor); //normal at ground should be around 300
+Serial.print(" Left: "); 
+Serial.print(leftSensor); //normal at ground should be around 300
 //  Serial.println();
   
   if (leftSensor > 850) { //Forward for left motor = backwards in real life
     leftMotor->setSpeed(50);
+//    Serial.print("R0"); 
+//    Serial.print("L50");
+    Serial.println();
     rightMotor -> setSpeed(0);
     leftMotor->run(BACKWARD);//left motor forwards
     rightMotor ->run(BACKWARD);//right motor backwards
@@ -68,6 +73,9 @@ void runCar() {
   else if (rightSensor > 850) {
     rightMotor->setSpeed(50);
     leftMotor -> setSpeed(0);
+//    Serial.print("R" + 0); 
+//    Serial.print("L" + 50);
+    Serial.println();
     rightMotor->run(FORWARD); //right motor forwards
     leftMotor->run(FORWARD); //left motor backwards
   }
@@ -75,6 +83,9 @@ void runCar() {
   else {
     leftMotor -> setSpeed(30);
     rightMotor -> setSpeed(30);
+//    Serial.print("R" + 30); 
+//    Serial.print("L" + 30);
+    Serial.println();
     rightMotor->run(FORWARD); //right motor forwards
     leftMotor->run(BACKWARD); //left motor forwards
   }
@@ -82,7 +93,10 @@ void runCar() {
 
 void stopCar() {
   rightMotor->setSpeed(0);
-  leftMotor->setSpeed(0);
+  leftMotor->setSpeed(0);    
+//  Serial.print("R" + 0); 
+//  Serial.print("L" + 0);
+  
   rightMotor->run(FORWARD);
   leftMotor->run(FORWARD);
 }
