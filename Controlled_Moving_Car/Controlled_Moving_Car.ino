@@ -12,7 +12,7 @@ int leftSensorPin = A0; //left IR sensor
 int rightSensorPin = A1; //right IR sensor
 int receivedChar; //initiating variable to hold character input
 boolean isRunning = false; //boolean for continuous driving
-
+boolean spd = false;;
 
 void setup() {
   long baudRate = 9600;
@@ -28,8 +28,11 @@ void setup() {
 
 void loop() {
   recvOneChar();  
-  if (isRunning){
-    runCar(); //will run car if isRunning boolean is true
+  if (isRunning && spd){
+    runCar(50); //will run car if isRunning boolean is true
+  }
+  else if (isRunning && spd == false) {
+    runCar(30);
   }
   else if (isRunning == false){
     stopCar(); //will stop car if isRunning boolean is false
@@ -40,8 +43,13 @@ void recvOneChar() {
   if (Serial.available() > 0) //detecting for serial input
   {
     receivedChar = Serial.read();
-    if (receivedChar == 'g') { //will set isRunning true if g key is entered in serial monitor
+    if (receivedChar == 'f') { //will set isRunning true if g key is entered in serial monitor
       isRunning = true;
+      spd = true;
+    }
+    else if (receivedChar == 'l') {
+      isRunning = true;
+      spd = false;
     }
     else if (receivedChar == 's') { //will set isRunning false if s key is entered in serial monitor
       isRunning = false;
@@ -50,27 +58,27 @@ void recvOneChar() {
 }
 
 
-void runCar() {
+void runCar(int spd) {
   int rightSensor = analogRead(rightSensorPin);
   int leftSensor = analogRead(leftSensorPin);
   
   if (leftSensor > 850) { //Forward for left motor = backwards in real life
-    leftMotor->setSpeed(50);
+    leftMotor->setSpeed(spd+20);
     rightMotor -> setSpeed(0);
     leftMotor->run(BACKWARD);//left motor forwards
     rightMotor ->run(BACKWARD);//right motor backwards
   }
 
   else if (rightSensor > 850) {
-    rightMotor->setSpeed(50);
+    rightMotor->setSpeed(spd+20);
     leftMotor -> setSpeed(0);
     rightMotor->run(FORWARD); //right motor forwards
     leftMotor->run(FORWARD); //left motor backwards
   }
 
   else {
-    leftMotor -> setSpeed(30);
-    rightMotor -> setSpeed(30);
+    leftMotor -> setSpeed(spd);
+    rightMotor -> setSpeed(spd);
     rightMotor->run(FORWARD); //right motor forwards
     leftMotor->run(BACKWARD); //left motor forwards
   }
