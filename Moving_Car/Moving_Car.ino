@@ -33,15 +33,11 @@ void loop() {
 
   int rightSensor = analogRead(rightSensorPin);
   int leftSensor = analogRead(leftSensorPin);
+  Serial.print(leftSensor);    Serial.print(","); Serial.print(LeftSpeed);    Serial.print(","); 
+  Serial.print(rightSensor); Serial.print(",") ;Serial.print(RightSpeed); 
+  Serial.println(); //16 bit vals
 
-  Serial.print("Right: "); Serial.print(rightSensor); //normal at ground should be around 300
-  Serial.println();
-  Serial.print("Left: "); Serial.print(leftSensor); //normal at ground should be around 300
-  Serial.println();
-  Serial.print("Rs: "); Serial.print(RightSpeed);
-  Serial.println();
-  Serial.print("Ls: "); Serial.print(LeftSpeed);
-
+  
   if (leftSensor > 850) { //Forward for left motor = backwards in real life
     RightSpeed = 0;
     LeftSpeed = 50;
